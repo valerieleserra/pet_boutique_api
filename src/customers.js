@@ -90,3 +90,17 @@ db.collection('customers').doc(docId).delete()
 .catch(err => response.status(500).send(err))
 
 }
+
+exports.updateCustomer = (request , response) => {
+  const db = connectDb()
+  const { name } = request.params
+  // console.log('these are my params',request.params)
+  // console.log('this is my body' , request.body)
+
+  db.collection('customers').doc(name).update(
+  {...request.body, timestamp: admin.firestore.FieldValue.serverTimestamp()
+  })
+
+  .then(() => response.status(202).send('successfully updated'))
+  .catch(err => response.status(500).send(err))
+}
